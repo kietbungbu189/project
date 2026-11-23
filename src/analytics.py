@@ -61,10 +61,10 @@ def classify_stock(stock):
             return "overstock"
         else:
             return "normal"
-    else:
+    elif pd.isna(stock):
 #        print("Missing stock/unknown")
 #"unknown" is a string (str)—a piece of text
-        return unknown
+        return "stock not known"
 
 #4 Combine revenue into one total
 #print(f"\nCombine revenue into one total".upper())
