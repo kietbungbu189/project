@@ -176,10 +176,11 @@ def reorder_basedon_tagetstock(table):
     reod = {}
     for idx, row in table.iterrows():
         reod_qty = row['target stock'] - row['Stock levels']
-        reod[idx] = reod_qty
+    #make sure reod_qty is 0 when stock levels > target stock
+        reod[idx] = max(0, reod_qty)
     table = table.copy()
 #not pd.DataFrame.index.map(reod)
     table['Reorder quantity'] = table.index.map(reod)
-    return table['Reorder qty']
+    return table['Reorder quantity']
 
 
