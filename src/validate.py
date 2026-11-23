@@ -43,4 +43,4 @@ def validate_warehouse(db):
     for fact_table, dim, key2 in validation_tuples:
         results = check_relationship(tables[fact_table], tables[dim], key2)
         if results:
-            raise ValueError(f"Missing data in {dim} are {results}")
+            raise ValueError(f"Main data table '{fact_table}' references this/these {key2} that does not/do not exist in '{dim}' lookup table: {results}")
