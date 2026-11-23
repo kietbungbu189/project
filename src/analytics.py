@@ -168,4 +168,18 @@ def check_material_balance(unified_monthly):
 
     return matched_balance
 
+def reorder_basedon_tagetstock(table):
+#Method 1 vectorized math
+#    table['Reorder qty'] = table['target stock'] - table['Stock levels']
+
+#Method 2 iterate
+    reod = {}
+    for idx, row in table.iterrows():
+        reod_qty = row['target stock'] - row['Stock levels']
+        reod[idx] = reod_qty
+    table = table.copy()
+#not pd.DataFrame.index.map(reod)
+    table['Reorder quantity'] = table.index.map(reod)
+    return table['Reorder qty']
+
 
