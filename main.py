@@ -97,6 +97,8 @@ def main():
     optiz = optimize(options_to_choose, rstk, budget=10000)
     print(optiz)
 
+    
+
     added_reord = reorder_basedon_targetstock(merge2)
     print(added_reord.head())
 

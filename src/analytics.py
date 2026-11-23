@@ -169,6 +169,12 @@ def check_material_balance(unified_monthly):
 
     return matched_balance
 
+#use .loc
+#if 'Reorder status' not existed, automatically create
+def reorder_status(table):
+    table.loc[table['Stock levels']<20, 'Reorder status'] = "Ready for reorder"
+    return table
+
 #import target stock directly into function:
 def reorder_basedon_targetstock(table, target_stock=20):
 #Method 1 vectorized math
