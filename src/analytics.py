@@ -169,18 +169,24 @@ def check_material_balance(unified_monthly):
 
     return matched_balance
 
-def reorder_basedon_targetstock(table):
+#import target stock directly into function:
+def reorder_basedon_targetstock(table, target_stock=20):
 #Method 1 vectorized math
-#    table['Reorder qty'] = table['target stock'] - table['Stock levels']
+#use defined parameter target_stock in vectorized math: ...
+#... target_stock-table['Stock levels'], will it generalize as normal using...
+#... contanst target_stock instead of a vector dataframe column -> broadcasting
+#    table['Reorder qty'] = target_stock - table['Stock levels']
 
 #Method 2 iterate
     reod = {}
     for idx, row in table.iterrows():
-        reod_qty = row['target stock'] - row['Stock levels']
+        reod_qty = target_stock - row['Stock levels']
     #make sure reod_qty is 0 when stock levels > target stock
         reod[idx] = max(0, reod_qty)
     table = table.copy()
 #not pd.DataFrame.index.map(reod)
+#reod_qty = target_stock - row['Stock levels'] now properly uses target_stock=20...
+#... parameter maps cleanly to table.index
     table['Reorder quantity'] = table.index.map(reod)
     return table['Reorder quantity']
 
