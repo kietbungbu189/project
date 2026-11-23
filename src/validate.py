@@ -40,6 +40,7 @@ def validate_warehouse(db):
     tables['supply_chain_datas'] = pd.read_sql("SELECT * FROM supply_chain_datas", connection)
     connection.close()
     validation_tuples = [('supply_chain_datas', 'products', 'SKU'), ('supply_chain_datas', 'suppliers', 'Supplier index'), ('supply_chain_datas', 'logistics', 'Logistics index')]
-    for supplychaindatas, dim, key2 in validation_tuples:
-        results = check_relationship(tables[supplychaindatas], tables[dim], key2)
-        print(results)
+    for fact_table, dim, key2 in validation_tuples:
+        results = check_relationship(tables[fact_table], tables[dim], key2)
+        if results:
+            raise ValueError(f"Missing data in {dim} are {results}")
