@@ -2,6 +2,8 @@ import pandas as pd
 
 
 def read_fact_csv(path):
+#    if csv[3]isna():
+#        return spent money not entered for this transaction
     return pd.read_csv(path)
 
 def extract_materials(month1, month2):
