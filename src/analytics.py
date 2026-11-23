@@ -69,8 +69,11 @@ def classify_stock(stock):
 #print(total)
 
 def total_revenue(table, revenue_column):
+#Method 1 - using sum()
+#    total = table[revenue_column].dropna().sum()
+#Method 2 - using reduce()
     revenue_value = table[revenue_column].dropna().tolist()
-    total = functools.reduce(lambda x, a: x+a, revenue_value)
+    total = functools.reduce(lambda x, a: x+a, revenue_value, 0)
     return total
 
 #5 Broadcast in Numpy
