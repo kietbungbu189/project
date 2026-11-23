@@ -148,7 +148,8 @@ def check_material_balance(unified_monthly):
     df_cols = df_cols.astype(float)
     finite = np.isfinite(df_cols)
     finite_across = finite.all(axis=1)
-    sliced_finite_df = unified_monthly[finite_across]
+    sliced_finite_df_backup = unified_monthly[finite_across]
+    sliced_finite_df = sliced_finite_df_backup.copy()
 
 #3.5.2 perform vector addition
     sliced_finite_df['Variance'] = sliced_finite_df['Opening quantity'] + sliced_finite_df['Received quantity'] - sliced_finite_df['Issued quantity'] - sliced_finite_df['Closing quantity']
@@ -168,7 +169,7 @@ def check_material_balance(unified_monthly):
 
     return matched_balance
 
-def reorder_basedon_tagetstock(table):
+def reorder_basedon_targetstock(table):
 #Method 1 vectorized math
 #    table['Reorder qty'] = table['target stock'] - table['Stock levels']
 

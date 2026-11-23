@@ -23,6 +23,7 @@ from src.optimize import optimize
 from src.config import MATERIAL_AUGUST, MATERIAL_OCTOBER
 from src.extract import extract_materials
 from src.analytics import check_material_balance
+from src.analytics import reorder_basedon_targetstock
 
 #Which materials are likely to run short, which vendor can cover the gap,...
 # and how much cash and extra stock would that order create?
@@ -95,6 +96,9 @@ def main():
 
     optiz = optimize(options_to_choose, rstk, budget=10000)
     print(optiz)
+
+    added_reord = reorder_basedon_targetstock(merge2)
+    print(added_reord.head())
 
 if __name__ == "__main__":
     main()
