@@ -14,5 +14,6 @@ def log_analysis(table, revenue, lowstock):
     f"\nNumber of low stock products: {len(lowstock)}\n\n"
     )
 #shows number of rows top down of dataframe table low_stock
+    LOG.parent.mkdir(parents=True, exist_ok=True)
     with open(LOG, mode="a") as log:
         log.write(message)
