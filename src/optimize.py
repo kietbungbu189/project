@@ -4,6 +4,8 @@ import pandas as pd
 def optimize(dim_supplier_withSKU, restock_table, budget):
 #both systems take an explicitly defined model and use algorithms to...
 #... determine what satisfies its rules
+#OWL and description logics are closely related, but not interchangeable names: OWL is an ontology...
+#... language; description logics provide the logical foundations for important OWL variants
 #P1
     restock_dict = {}
     for SKU, qty in zip(restock_table['SKU'], restock_table['Quantity to order']):
