@@ -17,6 +17,13 @@ def optimize(dim_supplier_withSKU, restock_table, budget):
 # proves its optimality when possible
 #For our project, feasibility is the closest parallel to the book’s satisfiability;...
 #... minimizing cost is the additional task
+#Direct costs: Purchasing materials and paying for their delivery
+#Variable costs: 	Purchase costs increase with the quantity ordered. Your holding-cost...
+#... term also increases with quantity
+#Fixed costs: Your shipping term models a fixed charge whenever a particular supplier option...
+#... is selected, regardless of quantity
+#Opportunity costs: Money committed to one SKU cannot be used for another purchase or...
+#... activity. Your current model does not explicitly value that forgone alternative
 #P1
     restock_dict = {}
     for SKU, qty in zip(restock_table['SKU'], restock_table['Quantity to order']):
@@ -62,7 +69,8 @@ def optimize(dim_supplier_withSKU, restock_table, budget):
         per_item_cost[index] = (row_['Per-unit purchase cost'] + row_.get('Holding cost', 0))*order_qty_choices[index] + user_supply_switches[index]*row_['Shipping cost']    
 #    print(my_series.values)
     per_item = pulp.lpSum(per_item_cost.values())
-    to_minimize_prob += per_item
+#Keeping the cost objective active
+    o_minimize_prob += per_item
     
 #P5
 #for key, value in person.items():
@@ -115,7 +123,7 @@ def optimize(dim_supplier_withSKU, restock_table, budget):
 
     if stts != "Optimal":
 #        print("No optimum buying option available")
-        raise ValueError("No optimum buying option available")
+        raise ValueError(f"No optimum buying option available, refer to issue: {stts}")
 
     rsult = {}
     for index2, value2 in order_qty_choices.items():
