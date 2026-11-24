@@ -176,7 +176,7 @@ def reorder_status(table):
     return table
 
 #import target stock directly into function:
-def reorder_basedon_targetstock(table, target_stock=20):
+def reorder_basedon_targetstock(table, target_stock=50):
 #Method 1 vectorized math
 #use defined parameter target_stock in vectorized math: ...
 #... target_stock-table['Stock levels'], will it generalize as normal using...
