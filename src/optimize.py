@@ -6,6 +6,8 @@ def optimize(dim_supplier_withSKU, restock_table, budget):
 #... determine what satisfies its rules
 #OWL and description logics are closely related, but not interchangeable names: OWL is an ontology...
 #... language; description logics provide the logical foundations for important OWL variants
+#Here a ValueError establishes only that the status was not "Optimal". It does not...
+#... establish that it was "Infeasible"
 #P1
     restock_dict = {}
     for SKU, qty in zip(restock_table['SKU'], restock_table['Quantity to order']):
