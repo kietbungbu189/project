@@ -94,14 +94,17 @@ def main():
     rstk = restock(low_20, 'Stock levels')
     print(rstk.head()) 
 
-    optiz = optimize(options_to_choose, rstk, budget=10000)
-    print(optiz)
-
-    
-
     added_reord = reorder_basedon_targetstock(merge2)
     print(added_reord.head())
 
+    sliced_demand_df = added_reord[['SKU', 'Reorder quantity']]
+
+    sliced_demand_df = sliced_demand_df[sliced_demand_df['Reorder quantity']>0]
+
+    rstk2 = sliced_demand_df.rename(columns={'Reorder quantity': 'Quantity to order'})
+
+    optiz = optimize(options_to_choose, rstk2, budget=10000)
+    print(optiz)
 if __name__ == "__main__":
     main()
 

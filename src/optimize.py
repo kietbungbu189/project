@@ -2,6 +2,8 @@ import pulp
 import pandas as pd
 
 def optimize(dim_supplier_withSKU, restock_table, budget):
+#both systems take an explicitly defined model and use algorithms to...
+#... determine what satisfies its rules
 #P1
     restock_dict = {}
     for SKU, qty in zip(restock_table['SKU'], restock_table['Quantity to order']):
@@ -86,7 +88,22 @@ def optimize(dim_supplier_withSKU, restock_table, budget):
         to_minimize_prob += min_to_order*user_supply_switches[index] <= order_qty_choices[index]     
     
 #P6
-    to_minimize_prob.solve()
+    solve_stats = to_minimize_prob.solve()
+
+#In PuLP, solve() updates the .status attribute on your problem variable (to_minimize_prob),...
+#... and pulp.LpStatus[...] translates that number into a readable word like "Optimal" or...
+#... "Infeasible"
+#following line needs .status after to_minimize_prob
+#PuLP 4.0+ removed prob.status from LpProblem and moved it to the LpSolveStats object...
+#... returned by prob.solve()
+    print(f"Status code for our problem.solve() is {solve_stats.status}, which means ")
+    stts =solve_stats.status.name
+    print(stts)
+
+    if stts != "Optimal":
+#        print("No optimum buying option available")
+        raise ValueError("No optimum buying option available")
+
     rsult = {}
     for index2, value2 in order_qty_choices.items():
         rsult[index2] = value2.varValue
