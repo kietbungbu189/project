@@ -189,11 +189,10 @@ def reorder_basedon_targetstock(table, target_stock=50):
         reod_qty = target_stock - row['Stock levels']
     #make sure reod_qty is 0 when stock levels > target stock
         reod[idx] = max(0, reod_qty)
-    table = table.copy()
 #not pd.DataFrame.index.map(reod)
 #reod_qty = target_stock - row['Stock levels'] now properly uses target_stock=20...
 #... parameter maps cleanly to table.index
     table['Reorder quantity'] = table.index.map(reod)
-    return table['Reorder quantity']
+    return table
 
 
