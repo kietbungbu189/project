@@ -24,10 +24,17 @@ def optimize(dim_supplier_withSKU, restock_table, budget):
 #... is selected, regardless of quantity
 #Opportunity costs: Money committed to one SKU cannot be used for another purchase or...
 #... activity. Your current model does not explicitly value that forgone alternative
+#direct, indirect, tangible, and intangible benefits: 
+#   Avoiding lost sales from stockouts.
+#   Avoiding production stoppages caused by missing materials.
+#   Reducing emergency purchasing and delivery charges.
+#   Improving customer service and delivery reliability.
 #P1
     restock_dict = {}
     for SKU, qty in zip(restock_table['SKU'], restock_table['Quantity to order']):
         restock_dict[SKU] = qty
+    restock_dict2 = pd.DataFrame(restock_dict)
+    restock_dict2 = restock_dict2.T
 #matching/filtering step
 # Method 1
 #    to_order = []
