@@ -63,10 +63,20 @@ def optimize(dim_supplier_withSKU, restock_table, budget):
 #    filtered_supplier = dim_supplier_withSKU.loc[dim_supplier_withSKU.SKU.isin(to_order)]
     filtered_supplier = dim_supplier_withSKU
 
+#The next step is P2: create the optimization problem that will choose among your...
+#... filtered supplier options.
 #P2 
-    to_minimize_prob = pulp.LpProblem("Restock_Order", pulp.LpMinimize)
+#    minimize_order_problem = pulp.problem()
+#After the comma on line 70, put pulp.LpMinimize (or pulp.LpMaximize, depending on your goal)
+#    minimize_order_problem = pulp.LpProblem("Order", pulp.Lp.Maximize)
+#Change it to pulp.LpMinimize (no dot between Lp and Minimize):
+#    minimize_order_problem = pulp.LpProblem("Order", pulp.LpMaximize)
+#On line 73, change LpMaximize to LpMinimize, because your objective is to minimize...
+#... purchasing cost
+    minimize_order_problem = pulp.LpProblem("Order", pulp.LpMinimize)
     
-#P3
+#P3 
+#Step 2 creates the model. Step 3 defines the decisions that model can make
     order_qty_choices = {}
     user_supply_switches = {}
     for index, row_ in filtered_supplier.iterrows():
