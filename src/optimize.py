@@ -33,8 +33,10 @@ def optimize(dim_supplier_withSKU, restock_table, budget):
     restock_dict = {}
     for SKU, qty in zip(restock_table['SKU'], restock_table['Quantity to order']):
         restock_dict[SKU] = qty
-    restock_dict2 = pd.DataFrame(restock_dict)
+    restock_dict2 = pd.DataFrame([restock_dict])
     restock_dict2 = restock_dict2.T
+    restock_dict2.columns = ['Quantity to order']
+    restock_dict2.index.rename = 'SKU'
 #matching/filtering step
 # Method 1
 #    to_order = []
@@ -50,9 +52,16 @@ def optimize(dim_supplier_withSKU, restock_table, budget):
     to_order = set(restock_dict) & set(dim_supplier_withSKU['SKU'])
 #this is the same as the step converting DataFrame into dictionary above
 #    id_movie=average_rating.loc[average_rating.rating==5.0].index
-    dim_supplier_withSKU.loc[dim_supplier_withSKU.SKU.isin(to_order)].head()
+#dim_supplier_withSKU.isin(to_order) checks every cell, producing a two-dimensional Boolean...
+#... DataFrame. .loc[...] needs a one-dimensional Boolean mask to select rows
+#SKU and isin in the wrong order
+#    a2 = dim_supplier_withSKU.isin.SKU(to_order)
+    a2 = dim_supplier_withSKU['SKU'].isin(to_order)
+    dim_supplier_withSKU = dim_supplier_withSKU[a2]
+#    dim_supplier_withSKU.loc[dim_supplier_withSKU.SKU.isin(to_order)].head()
 #save to a variable
-    filtered_supplier = dim_supplier_withSKU.loc[dim_supplier_withSKU.SKU.isin(to_order)]
+#    filtered_supplier = dim_supplier_withSKU.loc[dim_supplier_withSKU.SKU.isin(to_order)]
+    filtered_supplier = dim_supplier_withSKU
 
 #P2 
     to_minimize_prob = pulp.LpProblem("Restock_Order", pulp.LpMinimize)
@@ -77,7 +86,7 @@ def optimize(dim_supplier_withSKU, restock_table, budget):
 #    print(my_series.values)
     per_item = pulp.lpSum(per_item_cost.values())
 #Keeping the cost objective active
-    o_minimize_prob += per_item
+    to_minimize_prob += per_item
     
 #P5
 #for key, value in person.items():
